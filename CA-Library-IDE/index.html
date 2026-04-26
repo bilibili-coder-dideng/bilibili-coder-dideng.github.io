@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CA Library IDE：为CA拓展包打造的现代化集成开发环境，支持语法高亮、智能补全和主题扩展。">
+  <title>CA Library IDE - CA拓展包开发环境</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a12;
+      --text: #e0e0e0;
+      --text-muted: #8a8a8a;
+      --accent-blue: #4A90E2;
+      --accent-light-blue: #B0D4FF;
+      --card-bg: #161620;
+      --border: rgba(74, 144, 226, 0.15);
+      --shadow: 0 8px 32px rgba(74, 144, 226, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0a0a12, #1a2a4a);
+      color: var(--text);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    header {
+      padding: 1.5rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      background: rgba(10, 10, 18, 0.8);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--accent-blue);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding: 0.5rem 0;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent-blue);
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .hero {
+      padding: 8rem 5% 6rem;
+      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      color: var(--text);
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-light-blue));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 1.4rem;
+      margin-bottom: 3rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .highlight {
+      background: rgba(74, 144, 226, 0.1);
+      border-left: 3px solid var(--accent-blue);
+      padding: 1.2rem 1.5rem;
+      margin: 2rem auto;
+      max-width: 700px;
+      border-radius: 0 8px 8px 0;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem;
+    }
+
+    .cta-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2.2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      font-size: 1.1rem;
+    }
+
+    .btn-primary {
+      background: var(--accent-blue);
+      color: #fff;
+      box-shadow: 0 0 20px rgba(74, 144, 226, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 30px rgba(74, 144, 226, 0.6);
+    }
+
+    .btn-secondary {
+      color: var(--accent-blue);
+      border: 2px solid var(--accent-blue);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(74, 144, 226, 0.1);
+      transform: translateY(-3px);
+    }
+
+    .features {
+      padding: 6rem 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.8rem;
+      margin-bottom: 4rem;
+      color: var(--text);
+      font-weight: 700;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: var(--accent-blue);
+      box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--accent-blue);
+      box-shadow: 0 15px 30px rgba(74, 144, 226, 0.15);
+    }
+
+    .feature-icon {
+      font-size: 2.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent-blue);
+    }
+
+    .feature-title {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .about {
+      padding: 6rem 5%;
+      max-width: 1200px;
+      margin: 4rem auto;
+    }
+
+    .logo:hover {
+      transform: scale(1.08);
+      text-shadow: 0 0 15px rgba(74, 144, 226, 0.5);
+    }
+
+    .logo {
+      font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1.75rem;
+      background: linear-gradient(90deg, #4A90E2, #2A5C8F);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      padding: 0.5rem 0;
+    }
+
+    .about-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-text h2 {
+      font-size: 2.4rem;
+      margin-bottom: 1.8rem;
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .about-text p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+
+    .about-image {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid var(--border);
+      min-height: 350px;
+      cursor: zoom-in;
+    }
+
+    /* --- 滚动动画：淡入淡出 --- */
+    .fade-element {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .fade-element.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- 模态框样式 --- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.9);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal.show {
+      opacity: 1;
+    }
+
+    .modal-content {
+      margin: auto;
+      display: block;
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 30px rgba(74, 144, 226, 0.5);
+      animation: zoomIn 0.3s ease-out;
+    }
+
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1001;
+      transition: color 0.3s ease;
+    }
+
+    .close:hover {
+      color: #bbb;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+    }
+
+    footer a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 900px) {
+      .about-content {
+        grid-template-columns: 1fr;
+      }
+      .hero h1 {
+        font-size: 3rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links {
+        gap: 1.5rem;
+      }
+      .hero {
+        padding: 6rem 5% 4rem;
+      }
+      .cta-buttons {
+        flex-direction: column;
+      }
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="brand-name">CA Library IDE</div>
+    </div>
+    <nav class="nav-links">
+      <a href="#features">功能</a>
+      <a href="#about">关于</a>
+      <a href="./docs/index.html">文档</a>
+      <a href="https://github.com" target="_blank">GitHub(暂不开源！)</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1 class="fade-element">为 <span>CA 拓展包</span> 而生</h1>
+    <p class="subtitle fade-element">专为 CA 拓展包开发者打造的集成开发环境。支持行号、主题、关键字插入、自动缩进等核心功能，提升开发效率。</p>
+    <div class="highlight fade-element">
+      > 当前为测试阶段，暂不开放源码。
+    </div>
+    <div class="cta-buttons fade-element">
+      <a href="https://github.com/bilibili-dideng/Open-CAL-Download/releases" class="btn btn-primary">立即下载</a>
+      <a href="#features" class="btn btn-secondary">了解更多</a>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <h2 class="section-title fade-element">核心功能</h2>
+    <div class="features-grid">
+      <div class="feature-card fade-element">
+        <div class="feature-icon">📝</div>
+        <h3 class="feature-title">行号与当前行高亮</h3>
+        <p>清晰显示每一行代码，当前行自动高亮，便于定位与调试。</p>
+      </div>
+      <div class="feature-card fade-element">
+        <div class="feature-icon">🎨</div>
+        <h3 class="feature-title">主题系统</h3>
+        <p>支持通过拓展包加载自定义主题，适配不同视觉偏好。</p>
+      </div>
+      <div class="feature-card fade-element">
+        <div class="feature-icon">⚡</div>
+        <h3 class="feature-title">CA 关键字快速插入</h3>
+        <p>一键插入常用 CA 命令与语法结构，减少手动输入错误。</p>
+      </div>
+      <div class="feature-card fade-element">
+        <div class="feature-icon">⇥</div>
+        <h3 class="feature-title">智能自动缩进</h3>
+        <p>根据代码结构自动缩进，保持代码整洁规范。</p>
+      </div>
+      <div class="feature-card fade-element">
+        <div class="feature-icon">📊</div>
+        <h3 class="feature-title">结构化视图</h3>
+        <p>左侧显示 JSON/脚本结构树，快速跳转到目标节点。</p>
+      </div>
+      <div class="feature-card fade-element">
+        <div class="feature-icon">📁</div>
+        <h3 class="feature-title">文件树管理</h3>
+        <p>多文件项目支持，可视化文件目录，方便管理拓展包资源。</p>
+      </div>
+      <div class="feature-card fade-element">
+        <div class="feature-icon">🔧</div>
+        <h3 class="feature-title">JSON 格式化与校验</h3>
+        <p>自动格式化 JSON，语法错误实时提示，确保数据正确。</p>
+      </div>
+      <div class="feature-card fade-element">
+        <div class="feature-icon">🧩</div>
+        <h3 class="feature-title">拓展包扩展功能</h3>
+        <p>通过拓展包可增加新主题、新关键字模板，实现无限扩展。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="about-content">
+      <div class="about-text">
+        <h2 class="fade-element">关于 CA Library IDE</h2>
+        <p class="fade-element">本项目专为 <strong>CA 拓展包</strong> 开发者设计，旨在解决原生编辑器功能不足的问题。</p>
+        <p class="fade-element">我们支持完整的 CA 语法体系，并通过插件化架构，允许社区开发 <strong>主题包</strong> 与 <strong>关键字模板包</strong>，持续扩展 IDE 能力。</p>
+        <p class="fade-element">目前项目处于公测阶段，暂不开放源码，但我们欢迎开发者申请试用并提供反馈。</p>
+        <div class="cta-buttons" style="justify-content: flex-start; margin-top: 2.5rem;">
+          <a href="mailto:DGF-Studio@outlook.com" class="btn btn-secondary fade-element">联系我们</a>
+          <a href="#features" class="btn btn-primary fade-element">查看功能</a>
+        </div>
+      </div>
+
+      <div class="about-image fade-element" onclick="openModal('./image/1.png?v=1')">
+        <img src="./image/1.png?v=1" alt="IDE 预览" style="border-radius: 12px; width: 150%; height: 190px;">
+      </div>
+    </div>
+  </section>
+
+  <!-- 模态框 -->
+  <div id="imageModal" class="modal">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="modalImage">
+  </div>
+
+  <footer>
+    <p class="fade-element">© 2025 地灯dideng | 专为 <strong>CA 拓展包</strong> 打造 | 公测中</p>
+    <p class="fade-element">联系邮箱: <a href="mailto:DGF-Studio@outlook.com">DGF-Studio@outlook.com</a></p>
+  </footer>
+
+  <script>
+    // ===== 图片模态框功能 =====
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImage");
+    const closeBtn = document.querySelector(".close");
+
+    function openModal(imageSrc) {
+      modal.style.display = "flex";
+      modal.classList.add("show");
+      modalImg.src = imageSrc;
+    }
+
+    function closeModal() {
+      modal.classList.remove("show");
+      setTimeout(() => {
+        modal.style.display = "none";
+      }, 300);
+    }
+
+    modal.onclick = function(event) {
+      if (event.target === modal) {
+        closeModal();
+      }
+    };
+
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape' && modal.style.display === 'flex') {
+        closeModal();
+      }
+    });
+
+    // ===== 滚动淡入动画系统 =====
+    document.addEventListener('DOMContentLoaded', () => {
+      const fadeElements = document.querySelectorAll('.fade-element');
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            } else {
+              entry.target.classList.remove('visible');
+            }
+          });
+        },
+        {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        }
+      );
+
+      fadeElements.forEach(el => observer.observe(el));
+    });
+  </script>
+</body>
+</html>

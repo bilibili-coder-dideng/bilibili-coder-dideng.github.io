@@ -1,0 +1,127 @@
+{
+  "DGF-Studio": {
+    "state": "Open",
+    "name": "DGF-Studio",
+    "member": [
+      "地灯dideng",
+      "张涧",
+      "MC-20018"
+    ],
+    "Promotion_slogan": "Code and me",
+    "project": {
+      "TkinterTabMore": {
+        "introduction": "一个为 Python Tkinter 开发者设计的插件，旨在为字符串输入提供智能补全功能，提升开发效率。",
+        "state": "to examine"
+      },
+      "Minecraft Kibitect": {
+        "introduction": "一个为《我的世界》玩家打造的桌面工具箱，已支持存档查看、坐标计算等核心功能。",
+        "state": "died",
+        "died_time": "2025-08-15 22:00:00"
+      }
+    },
+    "team": {
+      "dideng": {
+        "state": "开发者 / 创始人",
+        "introduction": "热爱《我的世界》与Python开发，Minecraft Kibitect的创造者。"
+      },
+      "张涧": {
+        "state": "开发者",
+        "introduction": "编程小白，正在努力学习中，对技术充满热情。"
+      },
+      "MC-20018": {
+        "state": "资深开发者",
+        "introduction": "拥有2年工作经验，精通Python、Java、Golang、C#。现任蔚蓝陪伴工作室主开发，FandMC工作室创始人，专注于Minecraft插件与服务端开发。"
+      }
+    },
+    "Development_Log": {
+      "Minecraft Kibitect": {
+        "v0.0.1-Base": {
+          "time": "2025-04-13",
+          "introduction": "发布首个公开版本！包含核心功能：坐标计算器、存档查看器、工具网站集成,但是此工具在2025/08/15 22:00将永久停止更新"
+        }
+      }
+    },
+    "about": {
+      "introduction": "DGF Studio 是一个由三位热爱《我的世界》和编程的开发者组成的团队。我们相信，技术可以为游戏社区带来更美好的体验。我们的目标是开发出实用、高效、有趣的工具，让每一位玩家都能享受创造的乐趣。我们始于对《我的世界》的热爱，成于对代码的执着。"
+    },
+    "contact": {
+      "introduction": "对我们的项目感兴趣？欢迎随时联系！",
+      "information": {
+        "bilibili": "https://space.bilibili.com/1749090711",
+        "github": "https://github.com/bilibili-dideng",
+        "email": "mailto:DGF-Studio@outlook.com"
+      }
+    }
+  },
+  "地灯dideng": {
+    "name": "地灯dideng",
+    "state": "Open",
+    "studio": [
+      "DGF-Studio"
+    ],
+    "Web": [
+      "New-DGF-Studio",
+      "Old-DGF-Studio",
+      "地灯dideng"
+    ],
+    "project": {
+      "Minecraft Kibitect": {
+        "introduction": "一个为《我的世界》玩家打造的桌面工具箱，支持存档查看、工具网站集成等功能，未来将支持建筑生成与资源计算",
+        "state": "died",
+        "died_time": "2025-08-15 22:00:00"
+      }
+    },
+    "contact": {
+      "information": {
+        "bilibili": "https://space.bilibili.com/1749090711",
+        "github": "https://github.com/bilibili-dideng",
+        "email": "mailto:3483434955@outlook.com"
+      }
+    }
+  },
+  "Minecraft-Kibitect": {
+    "name": "Minecraft-Kibitect",
+    "state": "died",
+    "files": "Not",
+    "died_time": "2025-08-15 22:00:00"
+  },
+  "Ice-Ether-Mod": {
+    "name": "Ice-Ether-Mod",
+    "state": "open",
+    "type": "MC-mod"
+  },
+  "CA-Library-IDE": {
+    "state": "Open",
+    "best_version": "v1.0.0-alpha",
+    "name": "CA Library IDE",
+    "member": [
+      "地灯dideng"
+    ],
+    "Promotion_slogan": "为CA拓展包而生",
+    "introduction": "CA Library IDE 是一款专为《我的世界》CA拓展包开发者设计的集成开发环境（IDE）。它提供行号显示、当前行高亮、主题切换、CA关键字快速插入、智能自动缩进、JSON结构化视图、文件树管理以及JSON格式化与校验等核心功能。通过独特的拓展包机制，开发者可以为IDE增加新的主题和CA关键字模板，实现功能的无限扩展，极大地提升开发效率和体验。",
+    "project": {
+      "Core": {
+        "introduction": "IDE核心功能模块，包括编辑器、语法高亮、文件系统管理。",
+        "state": "developing"
+      },
+      "Extension-Package": {
+        "introduction": "拓展包支持系统，允许社区开发并加载自定义主题和关键字库。",
+        "state": "planning"
+      }
+    },
+    "team": {
+      "dideng": {
+        "state": "全栈开发者 / 项目负责人",
+        "introduction": "负责CA Library IDE的整体架构、核心功能开发与维护。"
+      }
+    },
+    "contact": {
+      "introduction": "对CA Library IDE有任何建议或问题？欢迎联系我们！",
+      "information": {
+        "bilibili": "https://space.bilibili.com/1749090711",
+        "github": "https://github.com/bilibili-dideng",
+        "email": "mailto:3483434955@outlook.com"
+      }
+    }
+  }
+}

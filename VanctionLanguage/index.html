@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vanction编程语言 - 现代化、高效、易用的通用编程语言，支持面向对象和函数式编程范式。">
+    <title>Vanction Programming Language</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* 全新的紫色绿色主题 */
+            --bg: linear-gradient(135deg, #0d0221 0%, #1a0b3d 50%, #111d2c 100%);
+            --text: #f0f0f0;
+            --text-muted: #a8a8a8;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --accent-gradient: linear-gradient(90deg, #8b5cf6, #10b981);
+            --accent-gradient-alt: linear-gradient(135deg, #10b981, #8b5cf6);
+            --card-bg: rgba(26, 11, 61, 0.85);
+            --card-gradient: linear-gradient(145deg, rgba(26, 11, 61, 0.95), rgba(17, 29, 44, 0.95));
+            --border: rgba(139, 92, 246, 0.25);
+            --shadow: 0 8px 32px rgba(139, 92, 246, 0.15);
+            --shadow-hover: 0 15px 45px rgba(139, 92, 246, 0.3);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            
+            /* 新的几何形状颜色 */
+            --shape-color-1: rgba(139, 92, 246, 0.1);
+            --shape-color-2: rgba(16, 185, 129, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 全新的背景装饰系统 */
+        .background-decor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        /* 几何形状装饰 */
+        .decor-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: pulse 8s ease-in-out infinite alternate;
+        }
+        
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-purple);
+            top: -200px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+        
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-green);
+            bottom: -150px;
+            left: -100px;
+            animation-delay: 2s;
+        }
+        
+        .shape-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--accent-purple);
+            top: 50%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.2;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0.4;
+            }
+        }
+        
+        /* 网格线效果 */
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+        
+        @keyframes gridMove {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        header {
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(15px);
+            background: rgba(13, 2, 33, 0.95);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform var(--transition);
+        }
+
+        .nav-links a:hover {
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .hero {
+            padding: 6rem 5% 8rem;
+            text-align: left;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-shape {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--accent-gradient-alt);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.4;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .hero-code {
+            background: rgba(26, 11, 61, 0.8);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 2;
+            font-family: 'Consolas', 'Monaco', 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #f0f0f0;
+            animation: floatUpDown 3s ease-in-out infinite;
+        }
+
+        @keyframes floatUpDown {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text);
+            font-weight: 900;
+            line-height: 1.05;
+            text-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 span {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            margin: 0.5rem 0;
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+            
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .highlight {
+            background: rgba(74, 144, 226, 0.1);
+            border-left: 3px solid var(--accent-blue);
+            padding: 1.2rem 1.5rem;
+            margin: 2rem auto;
+            max-width: 700px;
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+            font-family: 'Consolas', 'Monaco', 'Fira Code', 'Source Code Pro', monospace;
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 2.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+
+        .btn-primary {
+            background: var(--accent-gradient);
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(0, 212, 255, 0.45);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-secondary {
+            color: var(--accent-blue);
+            border: 2px solid var(--accent-blue);
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+            z-index: -1;
+        }
+
+        .btn-secondary:hover {
+            background: transparent;
+            color: white;
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary:hover::before {
+            transform: scaleX(1);
+        }
+
+        .features {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 4rem;
+            color: var(--text);
+            font-weight: 700;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent-blue);
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background: var(--card-gradient);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: var(--accent-blue);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.15) rotate(5deg);
+        }
+
+        .feature-title {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .getting-started {
+            padding: 6rem 5%;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .getting-started-content {
+            background: var(--card-gradient);
+            padding: 3rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .getting-started-content::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.1), transparent 70%);
+            transform: translate(50%, -50%);
+            z-index: 0;
+        }
+
+        .getting-started-content > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .getting-started h3 {
+            font-size: 1.4rem;
+            margin: 2rem 0 1rem;
+            color: var(--text);
+            font-weight: 600;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .getting-started h3:first-of-type {
+            margin-top: 0;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            font-family: 'Consolas', 'Monaco', 'Fira Code', 'Source Code Pro', monospace;
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+            overflow-x: auto;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-block pre {
+            margin: 0;
+            white-space: pre-wrap;
+            font-family: 'Consolas', 'Monaco', 'Fira Code', 'Source Code Pro', monospace;
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+        }
+        
+        pre {
+            font-family: 'Consolas', 'Monaco', 'Fira Code', 'Source Code Pro', monospace;
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+        }
+        
+        /* 确保所有内联code标签也使用圆滑字体 */
+        code {
+            font-family: 'Consolas', 'Monaco', 'Fira Code', 'Source Code Pro', monospace;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+        }
+
+        .example-section {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .example-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .example-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-blue);
+        }
+
+        .example-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .about {
+            padding: 6rem 5%;
+            max-width: 1200px;
+            margin: 4rem auto;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.4rem;
+            margin-bottom: 1.8rem;
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+        }
+
+        .logo {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 1.75rem;
+            background: linear-gradient(90deg, #4A90E2, #2A5C8F);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 10px rgba(74, 144, 226, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding: 0.5rem 0;
+        }
+
+        .logo:hover {
+            transform: scale(1.08);
+            text-shadow: 0 0 15px rgba(74, 144, 226, 0.5);
+        }
+
+        /* --- 滚动动画系统 --- */
+        /* 基础淡入效果 */
+        .fade-element {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .fade-element.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 淡入并缩放效果 */
+        .fade-scale-element {
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-scale-element.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        /* 从左侧滑入效果 */
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* 从右侧滑入效果 */
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* 旋转进入效果 */
+        .rotate-in {
+            opacity: 0;
+            transform: rotate(-10deg) translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .rotate-in.visible {
+            opacity: 1;
+            transform: rotate(0deg) translateY(0);
+        }
+
+        /* 波浪动画 */
+        @keyframes wave {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .wave-animation {
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        /* 抖动动画 */
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            10%, 30%, 50%, 70%, 90% {
+                transform: translateX(-5px);
+            }
+            20%, 40%, 60%, 80% {
+                transform: translateX(5px);
+            }
+        }
+
+        .shake-animation:hover {
+            animation: shake 0.8s ease-in-out;
+        }
+
+        /* 背景漂浮粒子效果 */
+        .particle-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* 文字逐字显示动画 */
+        .typewriter {
+            overflow: hidden;
+            border-right: 3px solid var(--accent-purple);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0;
+            }
+            to {
+                width: 100%;
+            }
+        }
+
+        @keyframes blink-caret {
+            from, to {
+                border-color: transparent;
+            }
+            50% {
+                border-color: var(--accent-purple);
+            }
+        }
+
+        /* 按钮点击波纹效果 */
+        .btn {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-links a {
+            font-size: 1.2rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 900px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .example-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                gap: 1.5rem;
+            }
+            
+            .hero {
+                padding: 6rem 5% 4rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .getting-started-content {
+                padding: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 全新的背景装饰系统 -->
+    <div class="background-decor">
+        <div class="decor-shape shape-1"></div>
+        <div class="decor-shape shape-2"></div>
+        <div class="decor-shape shape-3"></div>
+        <div class="grid-lines"></div>
+    </div>
+
+    <!-- 背景漂浮粒子Canvas -->
+    <canvas class="particle-canvas" id="particleCanvas"></canvas>
+    
+    <header>
+        <div class="logo">
+            <div class="brand-name">Vanction</div>
+        </div>
+        <nav class="nav-links">
+            <a href="#features">功能特性</a>
+            <a href="#getting-started">快速开始</a>
+            <a href="./docs/index.html">文档</a>
+            <a href="#examples">示例</a>
+            <a href="https://github.com/bilibili-dideng/VanctionProgrammingLanguage" target="_blank">GitHub</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="fade-element">现代化 <span>通用编程语言</span></h1>
+            <p class="subtitle fade-element">Vanction是一款高效、易用的通用编程语言，支持面向对象和函数式编程范式，为开发者提供优雅的语法和强大的功能。</p>
+            <div class="highlight fade-element">
+                >Open source and free | High performance<
+            </div>
+            <div class="cta-buttons fade-element">
+                <a href="#getting-started" class="btn btn-primary">立即开始</a>
+                <a href="https://github.com/bilibili-dideng/VanctionProgrammingLanguage" class="btn btn-secondary" target="_blank">查看源码</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-shape"></div>
+            <div class="hero-code fade-element">
+                <pre>func main() {
+    System.print("Hello, Vanction!");
+    return 0;
+}</pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <h2 class="section-title fade-element">核心特性</h2>
+        <div class="features-grid">
+            <div class="feature-card fade-element">
+                <div class="feature-icon">🎯</div>
+                <h3 class="feature-title">简洁优雅的语法</h3>
+                <p>设计简洁明了的语法，减少样板代码，让开发者专注于解决问题本身。</p>
+            </div>
+            <div class="feature-card fade-element">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">高性能执行</h3>
+                <p>采用先进的编译技术，生成高效的机器码，确保程序运行速度快。</p>
+            </div>
+            <div class="feature-card fade-element">
+                <div class="feature-icon">🔧</div>
+                <h3 class="feature-title">动态类型系统</h3>
+                <p>支持动态类型推断，提高开发效率，同时保持类型安全。</p>
+            </div>
+            <div class="feature-card fade-element">
+                <div class="feature-icon">🧩</div>
+                <h3 class="feature-title">面向对象编程</h3>
+                <p>完整支持类、继承、多态等面向对象特性，便于构建大型应用。</p>
+            </div>
+            <div class="feature-card fade-element">
+                <div class="feature-icon">📋</div>
+                <h3 class="feature-title">函数式编程支持</h3>
+                <p>支持函数式编程特性，提供更灵活的编程方式。</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="getting-started" id="getting-started">
+        <h2 class="section-title fade-element">快速开始</h2>
+        <div class="getting-started-content fade-element">
+            <h3>安装 Vanction</h3>
+            <div class="code-block">
+                <pre>git clone https://github.com/bilibili-dideng/VanctionProgrammingLanguage.git
+cd VanctionProgramLanguage
+mkdir build
+cd build
+cmake ..
+cmake --build .</pre>
+            </div>
+
+            <h3>编写第一个程序</h3>
+            <div class="code-block">
+                <pre>func main() {
+    System.print("Hello, Vanction!");
+    return 0;
+}</pre>
+            </div>
+
+            <h3>运行程序</h3>
+            <div class="code-block">
+                <pre>./build/Vanction examples/test/hello_world.vn</pre>
+            </div>
+
+            <h3>输出结果</h3>
+            <div class="code-block">
+                <pre>Hello, Vanction!</pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="example-section" id="examples">
+        <h2 class="section-title fade-element">代码示例</h2>
+        <div class="example-grid">
+            <div class="example-card fade-element">
+                <h3 class="example-title">面向对象编程</h3>
+                <div class="code-block">
+                    <pre>class Person() {
+    var name;
+    var age;
+    
+    instance.init(instance, name, age) {
+        instance.name = name;
+        instance.age = age;
+    }
+    
+    instance.greet(instance) {
+        System.print("Hello, my name is " + instance.name);
+    }
+}
+
+func main() {
+    var person = instance Person("Alice", 30);
+    person.greet();
+    return 0;
+}</pre>
+                </div>
+            </div>
+            
+            <div class="example-card fade-element">
+                <h3 class="example-title">函数式编程</h3>
+                <div class="code-block">
+                    <pre>func make_counter() {
+    var count = 0;
+    
+    func increment() {
+        count = count + 1;
+        return count;
+    }
+    
+    return increment;
+}
+
+func main() {
+    var counter = make_counter();
+    System.print(counter());  || 输出: 1
+    System.print(counter());  || 输出: 2
+    return 0;
+}</pre>
+                </div>
+            </div>
+            
+            <div class="example-card fade-element">
+                <h3 class="example-title">数据结构</h3>
+                <div class="code-block">
+                    <pre>func main() {
+    || 列表操作
+    var numbers = [1, 2, 3, 4, 5];
+    numbers.add(6);
+    
+    || 哈希表操作
+    var person = {"name": "Bob", "age": 25};
+    
+    || 遍历列表
+    for (var num in numbers) {
+        System.print("Number: " + num);
+    }
+    
+    return 0;
+}</pre>
+                </div>
+            </div>
+            
+            <div class="example-card fade-element">
+                <h3 class="example-title">错误处理</h3>
+                <div class="code-block">
+                    <pre>func main() {
+    try {
+        var result = 10 / 0;  || 这会引发DivideByZeroError
+        System.print("Result: " + result);
+    } happen (DivideByZeroError) as e {
+        System.print("Caught an error: " + e.text);
+    }
+    
+    return 0;
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-content">
+            <div class="about-text">
+                <h2 class="fade-element">关于 Vanction</h2>
+                <p class="fade-element">Vanction是一款开源编程语言，旨在为开发者提供现代化、高效、易用的编程体验。</p>
+                <p class="fade-element">我们的设计理念是：简洁的语法、强大的功能、良好的性能和丰富的生态系统。</p>
+                <p class="fade-element">目前项目处于积极开发阶段，欢迎开发者加入我们的社区，一起构建更好的Vanction语言！</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p class="fade-element">© 2025 Vanction Programming Language | 开源协议: MIT</p>
+        <p class="fade-element">由 <a href="https://github.com/bilibili-dideng" target="_blank">bilibili-dideng</a> 团队开发</p>
+    </footer>
+
+    <script>
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in-out';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // 滚动动画系统
+        document.addEventListener('DOMContentLoaded', () => {
+            // 观察所有需要动画的元素
+            const animatedElements = document.querySelectorAll(
+                '.fade-element, .fade-scale-element, .slide-in-left, .slide-in-right, .rotate-in'
+            );
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        } else {
+                            entry.target.classList.remove('visible');
+                        }
+                    });
+                },
+                {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                }
+            );
+
+            animatedElements.forEach(el => observer.observe(el));
+
+            // 背景漂浮粒子系统
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // 设置canvas尺寸
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            // 粒子配置 - 增加粒子数量和连线可见度
+            const particleConfig = {
+                count: 200,
+                maxDistance: 180, // 增加最大连线距离
+                particleSize: 1, // 增加粒子大小
+                lineWidth: 0.5, // 增加连线宽度
+                particleSpeed: 0.3, // 降低粒子速度，让效果更稳定
+                particleColor: 'rgba(139, 92, 246, 0.4)', // 增加粒子不透明度
+                lineColor: 'rgba(139, 92, 246, 0.6)', // 增加连线不透明度，让线条更明显
+                mouseColor: 'rgba(16, 185, 129, 1)'
+            };
+            
+            // 粒子数组
+            const particles = [];
+            
+            // 鼠标位置
+            const mouse = {
+                x: null,
+                y: null
+            };
+            
+            // 监听鼠标移动
+            document.addEventListener('mousemove', (e) => {
+                mouse.x = e.clientX;
+                mouse.y = e.clientY;
+            });
+            
+            // 创建粒子类
+            class Particle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * particleConfig.particleSize + 1;
+                    this.speedX = (Math.random() - 0.5) * particleConfig.particleSpeed;
+                    this.speedY = (Math.random() - 0.5) * particleConfig.particleSpeed;
+                    this.color = particleConfig.particleColor;
+                }
+                
+                // 更新粒子位置
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    
+                    // 边界检测
+                    if (this.x < 0 || this.x > canvas.width) {
+                        this.speedX *= -1;
+                    }
+                    if (this.y < 0 || this.y > canvas.height) {
+                        this.speedY *= -1;
+                    }
+                }
+                
+                // 绘制粒子
+                draw() {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+            
+            // 初始化粒子
+            function initParticles() {
+                for (let i = 0; i < particleConfig.count; i++) {
+                    particles.push(new Particle());
+                }
+            }
+            
+            // 绘制连线 - 线透明度随距离变化
+            function drawLines() {
+                if (!mouse.x || !mouse.y) return;
+                
+                for (let i = 0; i < particles.length; i++) {
+                    // 鼠标与粒子的连线
+                    const dx = mouse.x - particles[i].x;
+                    const dy = mouse.y - particles[i].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    // 当粒子与鼠标距离小于最大距离时，绘制连线
+                    if (distance < particleConfig.maxDistance) {
+                        // 调整透明度计算：增加基础透明度，让线条更明显
+                        // 公式：基础透明度 + (1 - 距离/最大距离) * 变化透明度
+                        const baseOpacity = 0.4; // 基础透明度，确保远距离线条也可见
+                        const variableOpacity = 0.8; // 随距离变化的透明度范围
+                        const opacity = baseOpacity + (1 - (distance / particleConfig.maxDistance)) * variableOpacity;
+                        const color = `rgba(139, 92, 246, ${opacity})`;
+                        
+                        ctx.strokeStyle = color;
+                        ctx.lineWidth = particleConfig.lineWidth;
+                        ctx.beginPath();
+                        ctx.moveTo(mouse.x, mouse.y);
+                        ctx.lineTo(particles[i].x, particles[i].y);
+                        ctx.stroke();
+                        
+                        // 粒子间连线 - 同样调整透明度计算
+                        for (let j = i + 1; j < particles.length; j++) {
+                            const dx2 = particles[i].x - particles[j].x;
+                            const dy2 = particles[i].y - particles[j].y;
+                            const distance2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
+                            const maxParticleDistance = particleConfig.maxDistance * 0.7;
+                            
+                            if (distance2 < maxParticleDistance) {
+                                // 调整粒子间连线透明度计算
+                                const baseOpacity2 = 0.3; // 基础透明度
+                                const variableOpacity2 = 0.7; // 变化范围
+                                const opacity2 = baseOpacity2 + (1 - (distance2 / maxParticleDistance)) * variableOpacity2;
+                                const color2 = `rgba(139, 92, 246, ${opacity2})`;
+                                
+                                ctx.strokeStyle = color2;
+                                ctx.lineWidth = particleConfig.lineWidth * 0.7;
+                                ctx.beginPath();
+                                ctx.moveTo(particles[i].x, particles[i].y);
+                                ctx.lineTo(particles[j].x, particles[j].y);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // 动画循环
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+                
+                drawLines();
+                requestAnimationFrame(animate);
+            }
+            
+            // 启动粒子系统
+            initParticles();
+            animate();
+
+            // 为按钮添加点击波纹效果（增强版）
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'ripple 0.6s ease-out';
+                    ripple.style.pointerEvents = 'none';
+                    
+                    this.appendChild(ripple);
+
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+
+            // 添加波纹动画
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes ripple {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // 为功能特性卡片添加悬停音效提示（视觉效果）
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-12px) scale(1.02) rotate(1deg)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1) rotate(0deg)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
